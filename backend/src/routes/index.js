@@ -6,11 +6,13 @@ import roomRouter from "./room.js";
 import facultyRouter from "./faculty.js";
 import subjecttableRouter from "./subjecttable.js";
 import userRouter from "./user.js";
+import sessionRouter from "./session.js";
 
 router.use("/table", tableRouter);
 router.use("/room", roomRouter);
 router.use("/faculty", facultyRouter);
 router.use("/subjecttable", subjecttableRouter);
 router.use("/user", userRouter);
+router.use("/session", sessionRouter);
 
 export default router;
