@@ -1,6 +1,14 @@
-# **RollCall** <img src="" height="110" align="left"/>
+<!-- # **RollCall (v1.0)** <img src="./assets/img/logo_c.png" height="110" align="left"/>
+ **A secure, automated attendance system that verifies real student presence through multiple layers of validation.** -->
 
-**A secure, automated attendance system that verifies real student presence through multiple layers of validation.**
+<p align="center">
+    <div align="center">
+        <img src="./assets/img/logo_c.png" height="150"/><br>
+        <h1>RollCall (v1.0)</h1>
+    </div>
+</p>
+
+#### **A secure, automated attendance system that verifies real student presence through multiple layers of validation.**
 
 # **Languages, Frameworks and Tools**
 
