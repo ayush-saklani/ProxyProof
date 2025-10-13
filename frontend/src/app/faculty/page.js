@@ -1,6 +1,7 @@
+// 'use client';
 import React, { useState } from 'react';
-import LocationPicker from '../components/LocationPicker';
-import QRCodeGenerator from '../components/QRCodeGenerator';
+import LocationPicker from '@/components/LocationPicker';
+import QRCodeGenerator from '@/components/QRCodeGenerator';
 
 function Faculty() {
   const [location, setLocation] = useState(null);

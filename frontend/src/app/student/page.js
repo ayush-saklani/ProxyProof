@@ -1,6 +1,7 @@
+'use client';
 import React, { useState } from 'react';
-import QRScanner from '../components/QRScanner';
-import FaceDetection from '../components/FaceDetection';
+import QRScanner from '@/components/QRScanner';
+import FaceDetection from '@/components/FaceDetection';
 
 function Student() {
   const [qrData, setQrData] = useState(null);
