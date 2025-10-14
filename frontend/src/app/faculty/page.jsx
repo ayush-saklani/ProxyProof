@@ -6,6 +6,7 @@ import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { AdapterDayjs } from '@mui/x-date-pickers/AdapterDayjs';
 import { TimePicker } from '@mui/x-date-pickers/TimePicker';
 import dayjs, { Dayjs } from 'dayjs';
+import DynamicOptions from '@/components/DynamicOptions';
 
 const Map = dynamic(() => import('@/components/Map'), { ssr: false });
 
@@ -54,19 +55,8 @@ function Faculty() {
             <div className="row">
               <div className="col-md-5">
                 <div className="bg-white shadow-md rounded-lg p-6 mb-4">
-                  <h5 className="text-xl font-bold mb-4">Course Details</h5>
-                  <div className="mb-3">
-                    <label htmlFor="course" className="form-label">Course</label>
-                    <input type="text" className="form-control" id="course" value={course} onChange={(e) => setCourse(e.target.value)} />
-                  </div>
-                  <div className="mb-3">
-                    <label htmlFor="semester" className="form-label">Semester</label>
-                    <input type="text" className="form-control" id="semester" value={semester} onChange={(e) => setSemester(e.target.value)} />
-                  </div>
-                  <div className="mb-3">
-                    <label htmlFor="section" className="form-label">Section</label>
-                    <input type="text" className="form-control" id="section" value={section} onChange={(e) => setSection(e.target.value)} />
-                  </div>
+                  <h5 className="text-xl font-bold mb-2">Course Details</h5>
+                  <DynamicOptions course={course} setCourse={setCourse} semester={semester} setSemester={setSemester} section={section} setSection={setSection} />
                 </div>
                 <div className="bg-white shadow-md rounded-lg p-6 mb-4">
                   <h5 className="text-xl font-bold mb-4">Time Slot</h5>
