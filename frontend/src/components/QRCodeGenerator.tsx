@@ -1,35 +1,37 @@
 'use client';
 import React, { useState } from 'react';
 
-function QRCodeGenerator({ location }) {
-  const [qrCode, setQrCode] = useState(null);
 
-  const generateQrCode = async () => {
+
+interface Location {
+  latitude: number;
+  longitude: number;
+  // Add other properties if needed
+}
+
+interface QRCodeGeneratorProps {
+  location: Location;
+  course: string;
+  semester: string;
+  section: string;
+  fromHr: string;
+  toHr: string;
+  fromAmPm: string;
+  toAmPm: string;
+}
+
+function QRCodeGenerator({ location, course, semester, section, fromHr, toHr, fromAmPm, toAmPm }: QRCodeGeneratorProps) {
+  const [qrCode, setQrCode] = useState<string | null>(null);
+
+  const generateQrCode = () => {
     if (!location) {
       alert("Please get your location first.");
       return;
     }
 
-    try {
-      const response = await fetch('http://localhost:3000/session/create', {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify(location),
-      });
-
-      const data = await response.json();
-
-      if (response.ok) {
-        setQrCode(data.data.qrCode);
-      } else {
-        throw new Error(data.message || "Failed to generate QR code");
-      }
-    } catch (error) {
-      console.error(error);
-      alert(error.message);
-    }
+    const qrData = JSON.stringify({ location, course, semester, section, from: `${fromHr} ${fromAmPm}`, to: `${toHr} ${toAmPm}` });
+    const qrCodeUrl = `https://api.qrserver.com/v1/create-qr-code/?size=150x150&data=${encodeURIComponent(qrData)}`;
+    setQrCode(qrCodeUrl);
   };
 
   return (

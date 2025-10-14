@@ -20,6 +20,7 @@ function Student() {
       <h1 className="text-2xl font-bold mb-4">Student</h1>
       {/* {!qrData && <QRScanner onScan={handleScan} />} */}
       {qrData && !isVerified && <FaceDetection onVerified={handleVerified} />}
+      <FaceDetection onVerified={handleVerified} />
       {isVerified && <div className="p-4 mb-4 text-sm text-green-700 bg-green-100 rounded-lg" role="alert">Attendance marked successfully!</div>}
     </div>
   );

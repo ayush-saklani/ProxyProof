@@ -1,7 +1,11 @@
 import React, { useRef, useEffect, useState } from 'react';
 import * as faceapi from 'face-api.js';
 
-function FaceDetection({ onVerified }) {
+interface FaceDetectionProps {
+  onVerified: (verified: boolean) => void;
+}
+
+function FaceDetection({ onVerified }: FaceDetectionProps) {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
   const [isVerified, setIsVerified] = useState(false);

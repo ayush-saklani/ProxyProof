@@ -28,7 +28,7 @@ export default function Header() {
     }
   }, []);
   return (
-    <nav className="navbar navbar-expand mx-3">
+    <div className="navbar navbar-expand mx-3">
       <img src={logo.src} className="h-18 d-inline-block align-text-top " alt="RollCall Logo" />
       <h2 className="mx-3 my-3 heading-text">RollCall - Attendance Manager</h2>
       <div className="d-flex gap-1 align-items-center">
@@ -43,6 +43,6 @@ export default function Header() {
         showLogout &&
         <button className="ms-auto fw-bold h4 px-4 btn btn-lg btn-danger rounded-pill float-end" onClick={logout}>Logout</button>
       }
-    </nav>
+    </div>
   );
 }
