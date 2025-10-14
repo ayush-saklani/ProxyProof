@@ -1,4 +1,4 @@
-// 'use client';
+'use client';
 import React, { useState } from 'react';
 import LocationPicker from '@/components/LocationPicker';
 import QRCodeGenerator from '@/components/QRCodeGenerator';
