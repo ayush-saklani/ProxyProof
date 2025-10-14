@@ -1,7 +1,7 @@
 import type { NextConfig } from "next";
 
 const nextConfig: NextConfig = {
-  /* config options here */
+  transpilePackages: ['@mui/material', '@mui/x-date-pickers', '@mui/system'],
 };
 
 export default nextConfig;
