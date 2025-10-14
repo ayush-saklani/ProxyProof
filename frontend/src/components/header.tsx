@@ -2,6 +2,7 @@
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import React, { useEffect } from "react";
+import logo from '@/assets/img/logo.png';
 
 export default function Header() {
   const logout = () => {
@@ -28,26 +29,20 @@ export default function Header() {
   }, []);
   return (
     <nav className="navbar navbar-expand mx-3">
-      <img src="/image/logo.png" className="h-18 d-inline-block align-text-top " alt="Class-Sync Logo" />
-      <h2 className="mx-3 my-3 heading-text">Class-Sync Timetable Manager</h2>
+      <img src={logo.src} className="h-18 d-inline-block align-text-top " alt="RollCall Logo" />
+      <h2 className="mx-3 my-3 heading-text">RollCall - Attendance Manager</h2>
+      <div className="d-flex gap-1 align-items-center">
+        <Link href="/student" className="text-gray-600 hover:text-gray-800 px-3 py-2 rounded-md font-bold text-2xl">
+          Student
+        </Link>
+        <Link href="/faculty" className="text-gray-600 hover:text-gray-800 px-3 py-2 rounded-md font-bold text-2xl">
+          Faculty
+        </Link>
+      </div>
       {
         showLogout &&
-        <button className="ms-auto fw-bold h4 px-4 btn btn-lg btn-danger rounded-pill float-end"
-          onClick={logout}>Logout</button>
+        <button className="ms-auto fw-bold h4 px-4 btn btn-lg btn-danger rounded-pill float-end" onClick={logout}>Logout</button>
       }
-      {/* <div className="menu float-end mt-2 mx-2" id="sidebar">
-        <div className="item">
-          <a className="link text fw-bold"><span className="text-dar">Direct Links <i className="bi bi-list" style={{ WebkitTextStrokeWidth: '1px' }}></i></span></a>
-          <div className="submenu">
-            <div className="submenu-item"><Link href="/edit/timetable-editor/" className="submenu-link text fw-bold"> Editor <i className="bi bi-pencil-fill"></i></Link></div>
-            <div className="submenu-item"><Link href="/edit/subject-data-editor/" className="submenu-link text fw-bold"> Set Subject <i className="bi bi-book" style={{ WebkitTextStrokeWidth: '1px' }}></i> </Link></div>
-            <div className="submenu-item"><Link href="/edit/faculty-data-editor/" className="submenu-link text fw-bold"> Edit Faculty <i className="bi bi-person-fill-add"></i> </Link></div>
-            <div className="submenu-item"><Link href="/edit/faculty-data-set/" className="submenu-link text fw-bold"> Set Faculty  <i className="bi bi-person-fill"></i> </Link></div>
-            <div className="submenu-item"><Link href="/edit/misc/" className="submenu-link text fw-bold"> Misc <i className="bi bi-xbox"></i> </Link></div>
-            <div className="submenu-item"><Link href="/edit/reset/" className="submenu-link text fw-bold"> Reset <i className="bi bi-exclamation-triangle-fill"></i> </Link></div>
-          </div>
-        </div>
-      </div> */}
     </nav>
   );
 }

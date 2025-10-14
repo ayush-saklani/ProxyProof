@@ -5,20 +5,6 @@ import Link from "next/link";
 export default function Home() {
   return (
     <>
-      <Header />
-      <div>
-        <h1>Home</h1>
-        <nav>
-          <ul>
-            <li>
-              <Link href="/student">Student</Link>
-            </li>
-            <li>
-              <Link href="/faculty">Faculty</Link>
-            </li>
-          </ul>
-        </nav>
-      </div>
       <section className="container mt-5">
         <div className="container">
           <h1 className="center text fw-bold text-center">Whats your purpose ?</h1>
@@ -31,7 +17,7 @@ export default function Home() {
                   <img src="/image/view.jpg" className="card-img" alt="..." />
                   <div className="card-img-overlay">
                     <h2 className="card-title text"><b>View <i className="bi bi-eye" style={{ WebkitTextStroke: '0.5px' }}></i></b></h2>
-                    <p className="card-text fw-bold pb-2">Everyone</p>
+                    <p className="card-text fw-bold pb-2">Student</p>
                   </div>
                 </Link>
               </div>
@@ -50,7 +36,7 @@ export default function Home() {
           </div>
         </div>
       </section>
-      <Footer />
+      {/* <Footer /> */}
     </>
   );
 }
