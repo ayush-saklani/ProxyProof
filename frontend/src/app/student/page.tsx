@@ -1,117 +1,166 @@
 'use client';
-import React, { useState, useEffect } from 'react';
-import QRScanner from '@/components/QRScanner';
-import FaceDetection from '@/components/FaceDetection';
+
+import React, { useEffect, useRef, useState } from 'react';
+import * as faceapi from 'face-api.js';
 
 function Student() {
-  const [qrData, setQrData] = useState<string | null>(null);
-  const [parsedData, setParsedData] = useState<any | null>(null);
-  const [isVerified, setIsVerified] = useState<boolean>(false);
-  const [location, setLocation] = useState<{ latitude: number; longitude: number; } | null>(null);
-  const [error, setError] = useState<string | null>(null);
+  const videoRef = useRef<HTMLVideoElement>(null);
+  const canvasRef = useRef<HTMLCanvasElement>(null);
+  const [status, setStatus] = useState('Loading models...');
+  const [modelsReady, setModelsReady] = useState(false);
+  const [referenceDescriptor, setReferenceDescriptor] = useState<Float32Array | null>(null);
+  const [match, setMatch] = useState(false);
 
-  const handleScan = (data: string) => {
-    try {
-      const parsed = JSON.parse(data);
-      setParsedData(parsed);
-      setQrData(data);
-    } catch (e) {
-      setError('Invalid QR Code');
-    }
-  };
-
-  const handleVerified = (verified: boolean) => {
-    if (verified) {
-      // Simple distance check (in degrees, not very accurate but good for a demo)
-      if (!location) {
-        setError('Unable to get your location');
-        return;
-      }
-      const distance = Math.sqrt(
-        Math.pow(location.latitude - parsedData.location.latitude, 2) +
-        Math.pow(location.longitude - parsedData.location.longitude, 2)
-      );
-
-      // 0.0001 degrees is roughly 11 meters
-      if (distance > 0.0001) {
-        setError('You are not in the correct location');
-        return;
-      }
-
-      const now = new Date();
-      const fromTime = new Date();
-      const [fromH, fromM] = parsedData.from.split(':');
-      fromTime.setHours(fromH, fromM, 0, 0);
-
-      const toTime = new Date();
-      const [toH, toM] = parsedData.to.split(':');
-      toTime.setHours(toH, toM, 0, 0);
-
-      if (now < fromTime || now > toTime) {
-        setError('Not within the allowed time slot');
-        return;
-      }
-
-      setIsVerified(true);
-    }
-  };
-
+  // load models
   useEffect(() => {
-    navigator.geolocation.getCurrentPosition((position) => {
-      setLocation({
-        latitude: position.coords.latitude,
-        longitude: position.coords.longitude,
-      });
-    });
+    const loadModels = async () => {
+      const url = '/models';
+      await Promise.all([
+        faceapi.nets.tinyFaceDetector.loadFromUri(url),
+        faceapi.nets.faceLandmark68Net.loadFromUri(url),
+        faceapi.nets.faceRecognitionNet.loadFromUri(url),
+      ]);
+      setModelsReady(true);
+      setStatus('Models ready. Start webcam.');
+      startVideo();
+    };
+    loadModels();
   }, []);
+
+  const startVideo = async () => {
+    try {
+      const stream = await navigator.mediaDevices.getUserMedia({ video: true });
+      if (videoRef.current) videoRef.current.srcObject = stream;
+    } catch (err) {
+      setStatus('Camera access denied.');
+    }
+  };
+
+  const handleUpload = async (e: React.ChangeEvent<HTMLInputElement>) => {
+    const file = e.target.files?.[0];
+    if (!file || !modelsReady) return;
+
+    const img = await faceapi.bufferToImage(file);
+    const detection = await faceapi
+      .detectSingleFace(img, new faceapi.TinyFaceDetectorOptions())
+      .withFaceLandmarks()
+      .withFaceDescriptor();
+
+    if (detection) {
+      setReferenceDescriptor(detection.descriptor);
+      setStatus('Reference face loaded. Look into camera.');
+    } else {
+      setStatus('No face detected in uploaded image.');
+    }
+  };
+
+  // main comparison loop
+  useEffect(() => {
+    if (!modelsReady || !referenceDescriptor) return;
+
+    const interval = setInterval(async () => {
+      if (!videoRef.current || !canvasRef.current) return;
+
+      const det = await faceapi
+        .detectSingleFace(videoRef.current, new faceapi.TinyFaceDetectorOptions())
+        .withFaceLandmarks()
+        .withFaceDescriptor();
+
+      const ctx = canvasRef.current.getContext('2d');
+      if (!ctx) return;
+      ctx.clearRect(0, 0, canvasRef.current.width, canvasRef.current.height);
+
+      if (!det) return;
+
+      const distance = faceapi.euclideanDistance(det.descriptor, referenceDescriptor);
+      const isSame = distance < 0.6; // lower = more similar
+      setMatch(isSame);
+
+      const box = det.detection.box;
+      ctx.strokeStyle = isSame ? 'lime' : 'red';
+      ctx.lineWidth = 2;
+      ctx.strokeRect(box.x, box.y, box.width, box.height);
+      ctx.fillStyle = 'white';
+      ctx.fillText(`dist: ${distance.toFixed(3)}`, box.x, box.y - 10);
+    }, 200);
+
+    return () => clearInterval(interval);
+  }, [modelsReady, referenceDescriptor]);
 
   return (
     <section className="container-fluid mt-5">
       <div className="container">
         <h1 className="center text fw-bold">Student Attendance</h1>
-        {error && <div className="alert alert-danger">{error}</div>}
         <div className="row">
-          {!qrData && (
-            <div className="col-12">
-              <div className="bg-white shadow-md rounded-lg p-6 mb-4">
-                <h5 className="text-xl font-bold mb-4">Scan QR Code</h5>
-                {/* <QRScanner onScan={handleScan} /> */}
-              </div>
-            </div>
-          )}
+          <div className="">
+            <div className="bg-white shadow-md rounded-lg p-6 mb-4">
+              <h5 className="text-xl font-bold mb-4">Upload Your Image</h5>
+              {/* <input type="file" onChange={handleFileChange} accept="image/*" className="mb-4" /> */}
+              <main className="flex flex-col items-center justify-center p-6 space-y-4 text-center">
+                <h1 className="text-2xl font-semibold">Face Match Prototype</h1>
+                <p className="text-gray-300">{status}</p>
 
-          {qrData && !isVerified && (
-            <>
-              <div className="col-md-6">
-                <div className="bg-white shadow-md rounded-lg p-6 mb-4">
-                  <h5 className="text-xl font-bold mb-4">Scanned Details</h5>
-                  {parsedData && (
-                    <ul>
-                      <li>Course: {parsedData.course}</li>
-                      <li>Semester: {parsedData.semester}</li>
-                      <li>Section: {parsedData.section}</li>
-                      <li>From: {parsedData.from}</li>
-                      <li>To: {parsedData.to}</li>
-                    </ul>
+                <input type="file" accept="image/*" onChange={handleUpload} className="mt-2" />
+
+                <div style={{ position: 'relative' }}>
+                  <video
+                    ref={videoRef}
+                    autoPlay
+                    muted
+                    width={480}
+                    height={360}
+                    className="rounded-lg border border-blue-500"
+                  />
+                  <canvas
+                    ref={canvasRef}
+                    width={480}
+                    height={360}
+                    style={{ position: 'absolute', top: 0, left: 0 }}
+                  />
+                  {match && (
+                    <div
+                      style={{
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        width: '100%',
+                        height: '100%',
+                        background: 'rgba(0,255,0,0.25)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontSize: '2rem',
+                        fontWeight: 'bold',
+                        color: 'white',
+                      }}
+                    >
+                      SAME FACE
+                    </div>
+                  )}
+                  {match === false && referenceDescriptor && (
+                    <div
+                      style={{
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        width: '100%',
+                        height: '100%',
+                        background: 'rgba(255,0,0,0.25)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontSize: '2rem',
+                        fontWeight: 'bold',
+                        color: 'white',
+                      }}
+                    >
+                      DIFFERENT FACE
+                    </div>
                   )}
                 </div>
-              </div>
-              <div className="col-md-6">
-                <div className="bg-white shadow-md rounded-lg p-6 mb-4">
-                  <h5 className="text-xl font-bold mb-4">Face Verification</h5>
-                  <FaceDetection onVerified={handleVerified} />
-                </div>
-              </div>
-            </>
-          )}
-
-          {isVerified && (
-            <div className="col-12">
-              <div className="p-4 mb-4 text-sm text-green-700 bg-green-100 rounded-lg" role="alert">
-                Attendance marked successfully!
-              </div>
+              </main>
             </div>
-          )}
+          </div>
         </div>
       </div>
     </section>
