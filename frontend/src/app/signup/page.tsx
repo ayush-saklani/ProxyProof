@@ -1,20 +1,19 @@
 'use client';
-import { useState } from 'react';
-import { useAuth } from '@/hooks/useAuth';
-import { validateEmail } from '@/utils/validation';
-import Cookies from 'js-cookie';
-import toast, { Toaster } from 'react-hot-toast';
+// import { useState } from 'react';
+// import { useAuth } from '@/hooks/useAuth';
+// import { validateEmail } from '@/utils/validation';
+// import Cookies from 'js-cookie';
+// import toast, { Toaster } from 'react-hot-toast';
 
-const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL;
+// const SERVER_URL = process.env.NEXT_PUBLIC_SERVER_URL;
 
 export default function LoginPage() {
 
   return (
     <>
-      <body>
-        <title>Class-Sync | Sign up</title>
+      <title>Class-Sync | Sign up</title>
 
-        <div className="container p-5 signupbox shadow-lg">
+      {/* <div className="container p-5 signupbox shadow-lg">
           <div className="row">
             <div className="col-md-6">
               <img src="/image/logo.png" className="h-16 d-inline-block align-text-top " />
@@ -60,8 +59,7 @@ export default function LoginPage() {
               </form>
             </div>
           </div>
-        </div>
-      </body>
+        </div> */}
     </>
   );
 }
