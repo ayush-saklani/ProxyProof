@@ -27,9 +27,9 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
     if (userexists) {
       let role = JSON.parse(userexists).role;
       if (role === 'student' && !pathname.startsWith('/student')) {
-        window.location.href = '/student';
+        // window.location.href = '/student';
       } else if ((role === 'faculty' || role === 'admin') && !pathname.startsWith('/faculty')) {
-        window.location.href = '/faculty';
+        // window.location.href = '/faculty';
       }
     } else {
       if (!hideHeaderRoutes.includes(pathname)) {

@@ -130,83 +130,86 @@ export default function Student() {
   }, [modelsReady, referenceDescriptor]);
 
   return (
-    <section className="container-fluid mt-5">
-      <div className="container">
-        <h1 className="center text fw-bold">Student Attendance</h1>
-        <div className="row">
-          <div className="bg-white shadow-md rounded-lg p-6 mb-4">
-            <h5 className="text-xl font-bold mb-4">Upload Your Image</h5>
+    <>
+      <title>ProxyProof | Student</title>
+      <section className="container-fluid mt-5">
+        <div className="container">
+          <h1 className="center text fw-bold">Student Attendance</h1>
+          <div className="row">
+            <div className="bg-white shadow-md rounded-lg p-6 mb-4">
+              <h5 className="text-xl font-bold mb-4">Upload Your Image</h5>
 
-            <main className="flex flex-col items-center justify-center p-6 space-y-4 text-center">
-              <h1 className="text-2xl font-semibold">Face Match Prototype</h1>
-              <p className="text-gray-600">{status}</p>
+              <main className="flex flex-col items-center justify-center p-6 space-y-4 text-center">
+                <h1 className="text-2xl font-semibold">Face Match Prototype</h1>
+                <p className="text-gray-600">{status}</p>
 
-              <input type="file" accept="image/*" onChange={handleUpload} className="mt-2" />
+                <input type="file" accept="image/*" onChange={handleUpload} className="mt-2" />
 
-              <div style={{ position: 'relative' }}>
-                <video
-                  ref={videoRef}
-                  autoPlay
-                  muted
-                  width={480}
-                  height={360}
-                  className="rounded-lg border border-blue-500"
-                />
-                <canvas
-                  ref={canvasRef}
-                  width={480}
-                  height={360}
-                  style={{ position: 'absolute', top: 0, left: 0 }}
-                />
+                <div style={{ position: 'relative' }}>
+                  <video
+                    ref={videoRef}
+                    autoPlay
+                    muted
+                    width={480}
+                    height={360}
+                    className="rounded-lg border border-blue-500"
+                  />
+                  <canvas
+                    ref={canvasRef}
+                    width={480}
+                    height={360}
+                    style={{ position: 'absolute', top: 0, left: 0 }}
+                  />
 
-                {/* Green overlay for match */}
-                {match && (
-                  <div
-                    style={{
-                      position: 'absolute',
-                      top: 0,
-                      left: 0,
-                      width: '100%',
-                      height: '100%',
-                      background: 'rgba(0,255,0,0.25)',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      fontSize: '2rem',
-                      fontWeight: 'bold',
-                      color: 'white',
-                    }}
-                  >
-                    {holdTime.toFixed(1)}s
-                  </div>
-                )}
+                  {/* Green overlay for match */}
+                  {match && (
+                    <div
+                      style={{
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        width: '100%',
+                        height: '100%',
+                        background: 'rgba(0,255,0,0.25)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontSize: '2rem',
+                        fontWeight: 'bold',
+                        color: 'white',
+                      }}
+                    >
+                      {holdTime.toFixed(1)}s
+                    </div>
+                  )}
 
-                {/* Red overlay for mismatch */}
-                {match === false && referenceDescriptor && (
-                  <div
-                    style={{
-                      position: 'absolute',
-                      top: 0,
-                      left: 0,
-                      width: '100%',
-                      height: '100%',
-                      background: 'rgba(255,0,0,0.25)',
-                      display: 'flex',
-                      alignItems: 'center',
-                      justifyContent: 'center',
-                      fontSize: '2rem',
-                      fontWeight: 'bold',
-                      color: 'white',
-                    }}
-                  >
-                    Hold for 5s
-                  </div>
-                )}
-              </div>
-            </main>
+                  {/* Red overlay for mismatch */}
+                  {match === false && referenceDescriptor && (
+                    <div
+                      style={{
+                        position: 'absolute',
+                        top: 0,
+                        left: 0,
+                        width: '100%',
+                        height: '100%',
+                        background: 'rgba(255,0,0,0.25)',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        fontSize: '2rem',
+                        fontWeight: 'bold',
+                        color: 'white',
+                      }}
+                    >
+                      Hold for 5s
+                    </div>
+                  )}
+                </div>
+              </main>
+            </div>
           </div>
         </div>
-      </div>
-    </section>
+      </section>
+    </>
   );
 }

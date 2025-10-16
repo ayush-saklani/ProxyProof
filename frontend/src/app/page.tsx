@@ -1,42 +1,20 @@
-import Header from "@/components/header";
-import Footer from "@/components/footer";
-import Link from "next/link";
+import masti from "@/assets/img/tp.gif";
+import masti2 from "@/assets/img/tp2.gif";
+import masti3 from "@/assets/img/tp3.gif";
 
 export default function Home() {
   return (
     <>
-      <section className="container mt-5">
-        <div className="container">
-          <h1 className="center text fw-bold text-center">Whats your purpose ?</h1>
-        </div>
-        <div className="container pb-5">
-          <div className="row justify-content-center">
-            <div className="col-sm-8 col-md-4 col-xl-4 mt-4">
-              <div className="card text-bg-dark">
-                <Link href="/view/">
-                  <img src="/image/view.jpg" className="card-img" alt="..." />
-                  <div className="card-img-overlay">
-                    <h2 className="card-title text"><b>View <i className="bi bi-eye" style={{ WebkitTextStroke: '0.5px' }}></i></b></h2>
-                    <p className="card-text fw-bold pb-2">Student</p>
-                  </div>
-                </Link>
-              </div>
-            </div>
-            <div className="col-sm-8 col-md-4 col-xl-4 mt-4">
-              <div className="card text-bg-dark">
-                <Link href="/edit/">
-                  <img src="/image/img8.jpg" className="card-img" alt="..." />
-                  <div className="card-img-overlay">
-                    <h2 className="card-title text"><b>Editor <i className="bi bi-gear-wide" style={{ WebkitTextStroke: '0.5px' }}></i></b></h2>
-                    <p className="card-text fw-bold pb-2">Admin only</p>
-                  </div>
-                </Link>
-              </div>
-            </div>
+      <title>ProxyProof | Home</title>
+      {(() => {
+        const imgs = [masti, masti2, masti3];
+        const src = imgs[Math.floor(Math.random() * imgs.length)];
+        return (
+          <div className="w-full flex items-center justify-center">
+            <img src={src.src} className="max-h-[80vh] object-contain" alt="" />
           </div>
-        </div>
-      </section>
-      {/* <Footer /> */}
+        );
+      })()}
     </>
   );
 }
