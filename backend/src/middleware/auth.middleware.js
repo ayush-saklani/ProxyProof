@@ -1,33 +1,31 @@
-import { asyncHandler } from "../utils/asyncHandler.js";
 import { ApiError } from "../utils/ApiError.js";
-import jwt from "jsonwebtoken";
+import { navit_server } from "../utils/constants.js";
 
-export const verifyJWT = asyncHandler(async (req, res, next) => {
+export const verifyJWT = async (req, res, next) => {   // verified and working
     try {
-        // Check for token in cookies or Authorization header from other servers
-        const token =
-            req.cookies?.accessToken ||
-            req.header("Authorization")?.replace("Bearer ", "");
-
+        const token = req.header("Authorization")?.replace("Bearer ", "");
         if (!token) {
             throw new ApiError(401, "Unauthorized");
         }
+        const response = await fetch(`${navit_server}/verifyJWT`, {
+            method: 'POST',
+            headers: {
+                'Authorization': `Bearer ${token}`
+            },
+        })
 
-        const decodedToken = jwt.verify(token, process.env.ACCESS_TOKEN_SECRET);
-
-        const user = await User.findById(decodedToken?._id).select(
-            "-password -refreshToken"
-        );
-        if (!user) {
-            throw new ApiError(401, "Invalid Access Token");
+        if (!response.ok) {
+            throw new ApiError(401, "Unauthorized");
         }
 
-        req.user = user;
         next();
     } catch (err) {
-        throw new ApiError(
-            401,
-            err?.message || "Error Occured while verifying token"
+        console.error("JWT verification error:");
+        return res.status(401).json(
+            new ApiError(401, {
+                message: 'Unauthorized',
+                error: err.message
+            }, 'Unauthorized')
         );
     }
-});
+};
