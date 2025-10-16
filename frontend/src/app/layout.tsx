@@ -5,6 +5,7 @@ import "./globals.css";
 import { Toaster } from "react-hot-toast";
 import { Metadata } from "next/dist/lib/metadata/types/metadata-interface";
 import Header from "@/components/header";
+import { usePathname } from "next/navigation";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -22,7 +23,9 @@ const geistMono = Geist_Mono({
 // };
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode; }>) {
-
+  const pathname = usePathname();
+  const hideHeaderRoutes = ['/signin', '/signup'];
+  const hideHeader = hideHeaderRoutes.includes(pathname);
 
   return (
     <html lang="en">
@@ -35,10 +38,12 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
         <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.3/dist/css/bootstrap.min.css" integrity="sha384-QWTKZyjpPEjISv5WaRU9OFeRpok6YctnYmDr5pNlyT2bRjXh0JMhjY6hW+ALEwIH" crossOrigin="anonymous" />
         <link rel="stylesheet" href="/css/style.css" />
         <link rel="stylesheet" href="https://unpkg.com/leaflet@1.7.1/dist/leaflet.css" />
+        <script src="https://cdn.jsdelivr.net/npm/@tailwindcss/browser@4"></script>
+
         <link rel="icon" href="/image/logo.png" />
       </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
-        <Header />
+        {!hideHeader && <Header />}
         <Toaster
           position="bottom-right"
           reverseOrder={true}
