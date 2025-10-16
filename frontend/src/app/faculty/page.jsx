@@ -45,8 +45,8 @@ function Faculty() {
   return (
     <LocalizationProvider dateAdapter={AdapterDayjs}>
       <>
-        <title>RollCall | Faculty</title>
-        <section className="container-fluid mt-5">
+        <title>ProxyProof | Faculty</title>
+        <section className="container-fluid mt-3">
           <div className="container">
             <h1 className="center text fw-bold">Faculty</h1>
             <span>

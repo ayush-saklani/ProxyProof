@@ -6,7 +6,7 @@ export default function LoginPage() {
 
   return (
     <>
-      <title>Roll Call | Sign up</title>
+      <title>ProxyProof | Sign up</title>
 
       <div className="container p-5 signupbox shadow-lg">
         <div className="row">
