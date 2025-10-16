@@ -1,10 +1,11 @@
-<!-- # **RollCall (v1.0)** <img src="./assets/img/logo_c.png" height="110" align="left"/>
- **A secure, automated attendance system that verifies real student presence through multiple layers of validation.** -->
+<!-- # **Proxyproof (1.0)** <img src="./frontend/src/assets/img/logo_white.png" height="110" alvign="left"/> -->
+ <!-- **A secure, automated attendance system that verifies real student presence through multiple layers of validation.** -->
 
 <p align="center">
     <div align="center">
-        <img src="./assets/img/logo_c.png" height="150"/><br>
-        <h1>RollCall (v1.0)</h1>
+        <img src="./frontend/src/assets/img/logo_white.png" height="110"/><br>
+        <h1></h1>
+        <!-- <h1>Proxyproof (v1.0)</h1> -->
     </div>
 </p>
 
