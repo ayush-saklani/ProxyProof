@@ -1,18 +1,12 @@
 import express from "express";
 const router = express.Router();
 
-import tableRouter from "./table.js";
-import roomRouter from "./room.js";
-import facultyRouter from "./faculty.js";
-import subjecttableRouter from "./subjecttable.js";
-import userRouter from "./user.js";
-import sessionRouter from "./session.js";
+// New attendance routers
+import attendanceRouter from "./attendance.routes.js";
+import studentAttendanceRouter from "./studentAttendance.routes.js";
 
-router.use("/table", tableRouter);
-router.use("/room", roomRouter);
-router.use("/faculty", facultyRouter);
-router.use("/subjecttable", subjecttableRouter);
-router.use("/user", userRouter);
-router.use("/session", sessionRouter);
+// Mount routes
+router.use("/attendance", attendanceRouter);
+router.use("/student-attendance", studentAttendanceRouter);
 
 export default router;

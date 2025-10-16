@@ -2,9 +2,8 @@ import express from "express";
 import morgan from "morgan";
 import cors from "cors";
 import dotenv from "dotenv";
-import routes from "./routes/index.js";
-import mongosanitize from "express-mongo-sanitize";
 import cookieParser from "cookie-parser";
+import routes from "./routes/index.js";
 
 dotenv.config({ path: "./.env" });
 
@@ -18,20 +17,26 @@ app.use(
             "https://gehutimetable.vercel.app",
             "https://projectclasssync.vercel.app",
             "https://navit.vercel.app",
-            "capacitor://localhost"             // ✅ Mobile app origin (Capacitor)
+            "https://proxyproof.vercel.app",
+            "http://localhost:3000",
         ],
         credentials: true,
     })
 );
 
-if (process.env.NODE_ENV === "development") {
-    app.use(morgan("dev"));
-}
+if (process.env.NODE_ENV === "development") app.use(morgan("dev"));
 
 app.use(cookieParser());
 app.use(express.json({ limit: "4MB" }));
-app.use(express.urlencoded({ limit: "16kb", extended: true }));
-app.use(mongosanitize());
+app.use(express.urlencoded({ extended: true, limit: "16kb" }));
+
+// Mount all routes
 app.use(routes);
+
+// Global error handler
+app.use((err, req, res, next) => {
+    console.error(err);
+    res.status(err.status || 500).json({ status: "error", message: err.message || "Internal Server Error" });
+});
 
 export { app };

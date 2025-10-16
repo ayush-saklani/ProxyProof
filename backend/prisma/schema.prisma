@@ -1,0 +1,43 @@
+datasource db {
+  provider  = "postgresql"
+  url       = env("DATABASE_URL")
+  directUrl = env("DIRECT_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Attendance {
+  id            String               @id @default(cuid())
+  teacher_email String
+  subject_code  String
+  course        String
+  semester      String
+  section       String
+  date          DateTime //actual date and time of the class
+  start_time    String // lecture start time
+  end_time      String // lecture end time
+  location      String[] // latitude and longitude
+  createdAt     DateTime             @default(now())
+  updatedAt     DateTime             @updatedAt
+  students      attendance_student[] // ← one-to-many relation
+  @@index([teacher_email])
+}
+
+model attendance_student {
+  id            String     @id @default(cuid())
+  attendance_id String // Foreign key referencing Attendance
+  student_email String
+  valid         Boolean // Indicates if the attendance is valid (secretly mark if proxy)
+  snapshot      String // Base64 encoded image string of the student at the time of attendance
+  createdAt     DateTime   @default(now())
+  updatedAt     DateTime   @updatedAt
+  attendance    Attendance @relation(fields: [attendance_id], references: [id])
+
+  @@index([attendance_id])
+  @@index([student_email])
+}
+
+// npx prisma generate
+// npx prisma db push

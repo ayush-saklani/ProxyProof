@@ -1,20 +1,26 @@
 import dotenv from "dotenv";
 import { app } from "./app.js";
-import connectDB from "./db/index.js";
+import prisma from "./prismaClient.js";
 
 dotenv.config({ path: "./.env" });
 
-connectDB()
-    .then(() => {
+async function startServer() {
+    try {
+        // Test Prisma DB connection
+        await prisma.$connect();
+        console.log("PostgreSQL connected successfully");
         app.on("error", (error) => {
-            console.log("ERR: ", error);
+            console.error("App error:", error);
             throw error;
         });
         const port = process.env.PORT || 3000;
         app.listen(port, () => {
             console.log(`Server is running on port ${port}`);
         });
-    })
-    .catch((err) => {
-        console.log("MONGODB connection Failed", err);
-    });
+    } catch (err) {
+        console.error("Database connection failed:", err);
+        process.exit(1);
+    }
+}
+
+startServer();
