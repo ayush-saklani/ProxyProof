@@ -27,7 +27,11 @@ const ProfilePictureMenu = ({ user }: { user: any }) => {
             <div className="gap-2">
                 <div className="text flex items-center gap-2 text-gray-400 hover:bg-indigo-800 hover:text-white transition-all duration-300 p-2 rounded-md cursor-pointer"
                     onClick={() => {
-                        window.location.replace("/profile");
+                        if (user.role === 'faculty' || user.role === 'admin') {
+                            window.location.replace("/faculty/profile");
+                        } else {
+                            window.location.replace("/student/profile");
+                        }
                     }}>
                     <CgProfile size={24} />
                     <span className="font-semibold">Edit Profile</span>

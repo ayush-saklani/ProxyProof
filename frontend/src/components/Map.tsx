@@ -14,10 +14,11 @@ L.Icon.Default.mergeOptions({
 interface MapProps {
   latitude: number;
   longitude: number;
+  radius: number;
   onUpdateLocation: (latitude: number, longitude: number) => void;
 }
 
-const Map = ({ latitude, longitude, onUpdateLocation }: MapProps) => {
+const Map = ({ latitude, longitude, radius, onUpdateLocation }: MapProps) => {
   if (typeof window === 'undefined') {
     return null; // Avoid server-side rendering for this component
   }
@@ -40,7 +41,7 @@ const Map = ({ latitude, longitude, onUpdateLocation }: MapProps) => {
           Your current location. (Drag to change)
         </Popup>
       </Marker>
-      <Circle center={[latitude, longitude]} radius={30} />
+      <Circle center={[latitude, longitude]} radius={radius} />
     </MapContainer>
   );
 };

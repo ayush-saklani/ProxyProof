@@ -19,7 +19,7 @@ const geistMono = Geist_Mono({
 
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode; }>) {
   const pathname = usePathname();
-  const hideHeaderRoutes = ['/signin', '/signup'];
+  const hideHeaderRoutes = ['/signin', '/signup', '/faculty/profile', '/student/profile'];
   const hideHeader = hideHeaderRoutes.includes(pathname);
 
   useEffect(() => {
