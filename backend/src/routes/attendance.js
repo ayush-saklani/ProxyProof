@@ -1,5 +1,5 @@
 import { Router } from "express";
-import { createAttendance, getTeacherAttendance } from "../controllers/attendanceController.js";
+import { createAttendance, getTeacherAttendance } from "../controllers/attendance.controller.js";
 import { verifyJWT } from "../middleware/auth.middleware.js";
 
 const router = Router();

@@ -2,8 +2,8 @@ import express from "express";
 const router = express.Router();
 
 // New attendance routers
-import attendanceRouter from "./attendance.routes.js";
-import studentAttendanceRouter from "./studentAttendance.routes.js";
+import attendanceRouter from "./attendance.js";
+import studentAttendanceRouter from "./studentAttendance.js";
 
 // Mount routes
 router.use("/attendance", attendanceRouter);

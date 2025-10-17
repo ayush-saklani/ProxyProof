@@ -12,9 +12,9 @@ export const createAttendance = async (req, res) => {
         const attendance = await prisma.attendance.create({
             data: { teacher_email, subject_code, course, semester, section, date: new Date(date), start_time, end_time, location }
         });
-        res.status(201).json(attendance);
+        return res.status(201).json(new ApiResponse(201, attendance, "Attendance created successfully"));
     } catch (err) {
-        res.status(500).json({ error: err.message });
+        throw new ApiError(500, "Missing required parameters", err);
     }
 };
 
@@ -26,8 +26,8 @@ export const getTeacherAttendance = async (req, res) => {
             where: { teacher_email: String(teacher_email) },
             include: { students: true }
         });
-        res.json(sessions);
+        return res.status(200).json(new ApiResponse(200, sessions, "Fetched attendance records successfully"));
     } catch (err) {
-        res.status(500).json({ error: err.message });
+        throw new ApiError(500, "Failed to retrieve attendance records", err);
     }
 };

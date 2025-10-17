@@ -1,6 +1,6 @@
 import dotenv from "dotenv";
 import { app } from "./app.js";
-import prisma from "./prismaClient.js";
+import prisma from "./db/prisma.js";
 
 dotenv.config({ path: "./.env" });
 
