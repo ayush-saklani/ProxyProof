@@ -8,7 +8,7 @@ import profilepicture from "@/assets/img/profile_picture.jpg";
 import { FaGithub, FaLinkedin } from "react-icons/fa";
 import { IoChevronBackOutline } from "react-icons/io5";
 import { User } from "@/models/user.type";
-import { serverlink } from "@/utils/constant";
+import { navit_server } from "@/utils/constant";
 
 const Profile = () => {
   const [error, setError] = useState("");
@@ -40,7 +40,7 @@ const Profile = () => {
 
     const toastid = toast.loading("Updating profile...");
     try {
-      fetch(`${serverlink}/upload_face`, {
+      fetch(`${navit_server}/upload_face`, {
         method: 'POST',
         headers: {
           'Content-Type': 'application/json',

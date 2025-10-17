@@ -5,7 +5,7 @@ import { HiLogin } from "react-icons/hi";
 import { toast } from "react-hot-toast";
 import logo from '@/assets/img/logo.png';
 import gif from "@/assets/img/logo.gif";
-import { serverlink } from "@/utils/constant";
+import { navit_server } from "@/utils/constant";
 
 const Signin = () => {
   const [showPassword, setShowPassword] = useState(false);
@@ -25,7 +25,7 @@ const Signin = () => {
     }
     setSendButtonFreeze(true);
     setError("");
-    fetch(`${serverlink}/signin`, {
+    fetch(`${navit_server}/signin`, {
       method: 'POST',
       headers: {
         'Content-Type': 'application/json'
